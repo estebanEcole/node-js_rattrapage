@@ -1,26 +1,46 @@
-const mongoose = require('mongoose');
-const express = require('express')
+/** module dependencies */
+import app from "./app.js"
+import http from "http";
 
-console.log('***== Program (RE)Start ==***');
 
-var app = express()
 
-mongoose.connect('mongodb+srv://stbn:8ygqiY@qXr$Fd48Q@cluster0.k9xnqgg.mongodb.net/?retryWrites=true&w=majority', () => {});
+/** Import the mongoose module */
+import mongoose from "mongoose";
 
-const Racer = mongoose.model('Racer', {
-    firstName: String,
-    lastName: String,
-    team: String,
-})
+/** define a schema */
+const Schema = mongoose.Schema;
 
-const Gasly = new Racer({ firstName: 'Pierre', lastName: 'Gasly', team: 'Alpine' })
-const Occon = new Racer({ firstName: 'Esteban', lastName: 'Occon', team: 'Alpine' })
 
-const path = require('path')
-app.use('/static', express.static(path.join(__dirname, 'public')))
 
-app.get('/', (req, res) => {
-    res.sendFile('/static/index.html')
-})
+/** set port */
+var port = normalizePort(process.env.PORT || "3000");
+app.set("port", port);
 
-app.listen(3000)
+
+
+/** http server */
+var server = http.createServer(app);
+
+
+
+/** listen on port */
+server.listen(port);
+
+
+
+/** Normalize a port into a number, string, or false. */
+function normalizePort(val) {
+    var port = parseInt(val, 10);
+
+    if (isNaN(port)) {
+        // named pipe
+        return val;
+    }
+
+    if (port >= 0) {
+        // port number
+        return port;
+    }
+
+    return false;
+}
